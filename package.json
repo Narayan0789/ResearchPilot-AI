@@ -1,0 +1,19 @@
+{
+  "name": "researchpilot-ai",
+  "version": "1.0.0",
+  "description": "ResearchPilot AI — Personal Research Assistant with Grounded RAG, PDF Page Citations, and Web Search",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm --prefix client install && npm --prefix client run build && npm --prefix server install",
+    "start": "npm --prefix server run start",
+    "server": "npm --prefix server run dev",
+    "server:start": "npm --prefix server run start",
+    "client": "npm --prefix client run dev",
+    "client:build": "npm --prefix client run build",
+    "test": "npm --prefix server test",
+    "install:all": "npm --prefix server install && npm --prefix client install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}
