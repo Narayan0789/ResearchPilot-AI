@@ -76,6 +76,9 @@ describe('Ingestion & SSRF Security Suite', () => {
   test('PDF Extraction - extracts text with actual page-level metadata', async () => {
     // Check if an existing sample PDF is available in server/uploads
     const uploadDir = path.resolve(process.cwd(), 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
     const files = fs.readdirSync(uploadDir).filter((f) => f.endsWith('.pdf'));
 
     if (files.length > 0) {
