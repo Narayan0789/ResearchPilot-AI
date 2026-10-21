@@ -5,6 +5,7 @@
   "description": "Backend API for ResearchPilot AI — Personal Research Assistant",
   "main": "src/server.js",
   "scripts": {
+    "build": "npm --prefix ../client install --include=dev && npm --prefix ../client run build && npm install",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seed": "node scripts/seedAdmin.js",
