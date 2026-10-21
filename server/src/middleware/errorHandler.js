@@ -21,16 +21,36 @@ export function errorHandler(err, req, res, next) {
     });
   }
 
-  // Handle Zod validation errors
-  if (err.name === 'ZodError') {
-    const errorDetails = err.errors.map((e) => ({
-      field: e.path.join('.'),
+  // Handle Zod validation errors (supports both Zod 3 err.errors and Zod 4 err.issues)
+  if (err.name === 'ZodError' || Array.isArray(err.issues)) {
+    const issues = err.issues || (Array.isArray(err.errors) ? err.errors : []);
+    const errorDetails = issues.map((e) => ({
+      field: Array.isArray(e.path) ? e.path.join('.') : String(e.path || ''),
       message: e.message,
     }));
     return res.status(400).json({
       success: false,
       error: errorDetails[0]?.message || 'Validation error',
       details: errorDetails,
+    });
+  }
+
+  // Handle Mongoose validation errors
+  if (err.name === 'ValidationError') {
+    const messages = Object.values(err.errors || {}).map((e) => e.message);
+    return res.status(400).json({
+      success: false,
+      error: messages[0] || 'Database validation error',
+      details: messages,
+    });
+  }
+
+  // Handle MongoDB duplicate key errors
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyPattern || {})[0] || 'field';
+    return res.status(409).json({
+      success: false,
+      error: `A record with this ${field} already exists.`,
     });
   }
 

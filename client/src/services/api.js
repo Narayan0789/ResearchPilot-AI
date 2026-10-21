@@ -15,6 +15,7 @@ api.interceptors.response.use(
     const message =
       error.response?.data?.error ||
       error.response?.data?.message ||
+      (typeof error.response?.data === 'string' && error.response?.data.length < 200 ? error.response?.data : null) ||
       error.message ||
       'An unexpected network error occurred';
     return Promise.reject(new Error(message));

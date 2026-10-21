@@ -20,8 +20,8 @@ export const googleAuthSchema = z.object({
 });
 
 export const createProjectSchema = z.object({
-  title: z.string().min(2, 'Project title must be at least 2 characters').max(200),
-  topic: z.string().min(5, 'Research topic must be at least 5 characters').max(2000),
+  title: z.string().trim().min(1, 'Project title is required').max(200),
+  topic: z.string().trim().min(1, 'Research topic is required').max(2000),
   researchSettings: z
     .object({
       chunkSize: z.number().min(200).max(2000).optional(),
@@ -53,8 +53,8 @@ export const chatMessageSchema = z.object({
 });
 
 export const createReportSchema = z.object({
-  title: z.string().min(3, 'Report title must be at least 3 characters').max(250),
-  topic: z.string().min(5, 'Topic description is required').max(2000),
+  title: z.string().trim().min(1, 'Report title is required').max(250),
+  topic: z.string().trim().min(1, 'Topic description is required').max(2000),
   format: z.enum(['markdown', 'executive_summary', 'structured_analysis']).default('markdown'),
   sourceIds: z.array(z.string()).optional(),
 });
